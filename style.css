@@ -19,8 +19,6 @@ svg {
     color: var(--color-text);
 }
 
-
-
 body{
     padding-top: 15px;
     background-color: var(--color-bg);
@@ -33,5 +31,8 @@ body{
 #board{
     width: 500px;
     height : 500px;
-    border: 1px solid;
+    border: 8px solid var(--color-board-border);
+    border-radius: 32px;
+    background-color: var(--color-board-bg);
+
 }
