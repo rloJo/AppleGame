@@ -72,9 +72,9 @@ body{
         border: 8px solid var(--color-progress-border);
         border-radius: 12px;
         overflow: hidden;
-        
+
         div {
-            width: 70%;
+            width: 100%;
             height: 100%;
             background-color: var(--color-progress-border);
         }
@@ -83,6 +83,14 @@ body{
     #start{
         flex-shrink: 0;
 
+        padding: 10px 15px;
+        background-color: var(--color-board-border);
+        border: none;
+        border-radius: 12px;
+        color: white;
+        font-size: 20px;
+        
+        cursor: pointer;
     }
 }
 
