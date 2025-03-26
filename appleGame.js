@@ -54,13 +54,14 @@ function dragMove(row, col){
 }
 
 function dragEnd(){
-    dragging = false
+    dragging = false;
+    collect();
     clearSelection();
 }
 
 function collect(){
     let sum = 0;
-    const $selectedApples = $board.querySelectorAll('.apple.selected');
+    const $selectedApples = $board.querySelectorAll('.apple.selected:not(.collected)');
     for(const $apple of $selectedApples){
         sum += Number($apple.textContent);
     }
