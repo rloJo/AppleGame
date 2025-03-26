@@ -7,13 +7,15 @@ const numCols = styles.getPropertyValue('--num-cols');
 //elements
 const $board = document.querySelector('#board');
 const $appleIcon = document.querySelector('#apple-icon');
+const $start = document.querySelector('#start');
 const $apples = [];
-
+const $socre = document.querySelector('#score span');
 //variables
+let playing = false;
 let dragging = false;
 let pos1 = null;
 let pos2 = null;
-
+let score;
 
 init();
 function init(){
@@ -26,8 +28,6 @@ function init(){
             $icon.removeAttribute('id');
             
             const $number = document.createElement('span');
-            $number.textContent = 5;
-            $number.textContent = Math.floor(Math.random()*9)+1;
             $apple.addEventListener('mousedown',() => dragBegin(row,col));
             $apple.addEventListener('mousemove',() => dragMove(row, col));
             $apple.addEventListener('mouseup',dragEnd);
@@ -39,6 +39,31 @@ function init(){
             $apples.push($apple);
         }
     }
+
+    $start.addEventListener('click',start);
+}
+
+function start(){
+    playing - true;
+    score = 0;
+    $socre.textContent = score;
+    $board.classList.add('playing');
+    $start.textContent = "reset";
+    for(const $apple of $board.querySelectorAll('.collected')){
+        $apple.classList.remove('collected');
+    }
+    for(const $apple of $apples){
+        $apple.querySelector('span')
+        .textContent = Math.floor(Math.random()*9)+1;
+
+    }
+}
+
+function end(){
+    playing = false;
+    dragEnd();
+    $board.classList.remove('playing');
+    $start.textContent = "start";
 }
 
 function dragBegin(row, col){
@@ -71,6 +96,10 @@ function collect(){
     for(const $apple of $selectedApples){
         $apple.classList.add('collected');
     }
+
+    score += $selectedApples.length;
+    $socre.textContent = score;
+
 }
 
 
