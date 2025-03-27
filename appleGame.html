@@ -29,7 +29,7 @@
   </div>
 
   <div id= "board">
-    <h2 id = "final-score"></h2>
+    <h2 id="final-score"></h2>
   </div>
   <svg id='apple-icon' version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" xml:space="preserve">
     <path style="fill:#6B6B6B;"
@@ -39,7 +39,12 @@
     <path
       d="M360.196,109.621c-55.927,2.03-87.668,36.526-104.171,36.526s-48.244-34.496-104.171-36.526	C95.928,107.591,0.021,149.728,0.021,279.254S104.209,512,157.549,512s71.915-15.163,98.451-15.163S301.085,512,354.451,512	s157.528-103.227,157.528-232.746S416.123,107.591,360.196,109.621z" />
   </svg>
+  <div id = "audioController">
+    <audio id = "bgmController" src ="resource/emart.mp3" id = "bgm" loop></audio>
+    <input id ="muteButton" type = "checkbox" name ="mute">
+    <label for ="mute"> BGM</label>
+    <input id= "bgmValue" type ="range" min = "0" max = "1" step = "0.1" value ="0.5">
+  </div>
   <script src="appleGame.js"></script>
 </body>
-
 </html>

@@ -3,7 +3,7 @@
     --num-cols: 17;
     --board-width:600px;
     --apple-size: calc(var(--board-width)/var(--num-cols));
-    --duration: 5;
+    --duration: 120;
 
     --color-text: #533;
     --color-bg: #F4F1ED;
@@ -216,4 +216,10 @@ body{
         z-index: -1;
         transform: scale(0);
     }
+}
+
+#bgmController{
+    background: #06CD68;
+
+
 }

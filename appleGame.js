@@ -13,6 +13,9 @@ const $apples = [];
 const $socre = document.querySelector('#score span');
 const $progress = document.querySelector('#progress div');
 const $finalScore = document.querySelector('#final-score');
+const $audio = document.querySelector('#bgmController');
+const $audioController = document.querySelector('#bgmValue');
+const $audioMute = document.querySelector('#muteButton');
 //variables
 let playing = false;
 let dragging = false;
@@ -46,6 +49,14 @@ function init(){
 
     document.addEventListener('mousemove',(e) => dragEnd(e));
     $start.addEventListener('click',start);
+    $start.addEventListener('click',audioReset);
+    $audioController.addEventListener('input',() => {
+        $audio.volume = $audioController.value;
+    });
+
+    $audioMute.addEventListener('change', () => {
+        $audio.muted = $audioMute.checked;
+    });
 
     $appleIcon.remove();
 }
@@ -79,6 +90,12 @@ function start(){
     }
 }
 
+function audioReset(){
+    $audio.pause();
+    $audio.currentTime = 0;
+    $audio.play();
+}
+
 function end(){
     dragEnd();
 
@@ -87,6 +104,8 @@ function end(){
     $board.classList.remove('playing');
     $start.textContent = "start";
     $finalScore.textContent = score;
+    $audio.pause();
+    $audio.currentTime = 0;
 }
 
 function dragBegin(e,row, col){
@@ -155,7 +174,6 @@ function drawSelection(){
     for(let row = minRow;row<=maxRow;row++){
         for(let col = minCol; col<=maxCol; col++){
             const $apple = $apples[row*numCols+col];
-
             $apple.classList.add('selected');
         }
     }
