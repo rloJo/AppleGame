@@ -1,9 +1,9 @@
 :root{
-    --num-rows: 5;
-    --num-cols: 8;
+    --num-rows: 10;
+    --num-cols: 17;
     --board-width:600px;
     --apple-size: calc(var(--board-width)/var(--num-cols));
-
+    --duration: 5;
 
     --color-text: #533;
     --color-bg: #F4F1ED;
@@ -78,6 +78,12 @@ body{
             height: 100%;
             background-color: var(--color-progress-border);
         }
+
+        div.playing{
+            transform: scaleX(0);
+            transform-origin: top left;
+            transition: transform calc(var(--duration)*1s) linear;
+        }
     }
 
     #start{
@@ -95,6 +101,7 @@ body{
 }
 
 #board{
+    position: relative;
     padding :15px;
     border: 8px solid var(--color-board-border);
     border-radius: 12px;
@@ -142,10 +149,6 @@ body{
         }
     }
 
-    .apple:hover{
-        cursor: crosshair;
-    }
-
     .apple.selected{
         background-color: var(--color-apple-bg-selected);
 
@@ -171,4 +174,46 @@ body{
         }
     }
 
+    #final-score{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        font-size : 250px;
+        font-weight: bold;
+
+        display: flex;
+        text-align: center;
+        justify-content: center;
+    }
+
+}
+
+#board:not(.playing){
+    .apple{
+        opacity: 0.7;
+        span{
+            opacity: 0;
+        }
+    }
+
+    #final-score{
+        z-index: 2;
+        opacity: 1;
+        transform: scale(1);
+        transition: opacity 350ms, transform 350ms;
+    }
+}
+
+#board.playing{
+    .apple:hover{
+        cursor: crosshair;
+    }
+
+    #final-score{
+        opacity :0;
+        z-index: -1;
+        transform: scale(0);
+    }
 }

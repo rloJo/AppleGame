@@ -3,6 +3,7 @@ const $root = document.querySelector(':root');
 const styles = window.getComputedStyle($root);
 const numRows = styles.getPropertyValue('--num-rows');
 const numCols = styles.getPropertyValue('--num-cols');
+const duration = styles.getPropertyValue('--duration');
 
 //elements
 const $board = document.querySelector('#board');
@@ -10,12 +11,15 @@ const $appleIcon = document.querySelector('#apple-icon');
 const $start = document.querySelector('#start');
 const $apples = [];
 const $socre = document.querySelector('#score span');
+const $progress = document.querySelector('#progress div');
+const $finalScore = document.querySelector('#final-score');
 //variables
 let playing = false;
 let dragging = false;
 let pos1 = null;
 let pos2 = null;
 let score;
+let timerId = null;
 
 init();
 function init(){
@@ -28,9 +32,9 @@ function init(){
             $icon.removeAttribute('id');
             
             const $number = document.createElement('span');
-            $apple.addEventListener('mousedown',() => dragBegin(row,col));
-            $apple.addEventListener('mousemove',() => dragMove(row, col));
-            $apple.addEventListener('mouseup',dragEnd);
+            $apple.addEventListener('mousedown',(e) => dragBegin(e, row,col));
+            $apple.addEventListener('mousemove',(e) => dragMove(e, row, col));
+            $apple.addEventListener('mouseup',(e)=> dragEnd(e));
 
             $apple.appendChild($icon);
             $apple.appendChild($number);
@@ -40,18 +44,34 @@ function init(){
         }
     }
 
+    document.addEventListener('mousemove',(e) => dragEnd(e));
     $start.addEventListener('click',start);
+
+    $appleIcon.remove();
 }
 
 function start(){
-    playing - true;
+    playing = true;
     score = 0;
+
     $socre.textContent = score;
     $board.classList.add('playing');
     $start.textContent = "reset";
+
+    $progress.classList.remove('playing');
+    $progress.offsetHeight;
+    $progress.classList.add('playing');
+
+    if(timerId){
+        clearTimeout(timerId);
+    }
+    timerId = setTimeout(end, duration * 1000);
+
+
     for(const $apple of $board.querySelectorAll('.collected')){
         $apple.classList.remove('collected');
     }
+
     for(const $apple of $apples){
         $apple.querySelector('span')
         .textContent = Math.floor(Math.random()*9)+1;
@@ -60,25 +80,42 @@ function start(){
 }
 
 function end(){
-    playing = false;
     dragEnd();
+
+    playing = false;
+
     $board.classList.remove('playing');
     $start.textContent = "start";
+    $finalScore.textContent = score;
 }
 
-function dragBegin(row, col){
+function dragBegin(e,row, col){
+    e.stopPropagation();
+
+    if(!playing) return;
+
     dragging = true;
+
     pos1 = [row,col];
     pos2 = [row,col];
 }
 
-function dragMove(row, col){
-    if(!dragging) return;
+function dragMove(e, row, col){
+
+    e.stopPropagation();
+
+    if(!playing || !dragging) return;
+
     pos2 = [row,col];
+
     drawSelection();
 }
 
-function dragEnd(){
+function dragEnd(e){
+    if(e){
+        e.stopPropagation();
+    }
+    if(!playing) return;
     dragging = false;
     collect();
     clearSelection();
@@ -87,6 +124,7 @@ function dragEnd(){
 function collect(){
     let sum = 0;
     const $selectedApples = $board.querySelectorAll('.apple.selected:not(.collected)');
+    
     for(const $apple of $selectedApples){
         sum += Number($apple.textContent);
     }
@@ -99,10 +137,7 @@ function collect(){
 
     score += $selectedApples.length;
     $socre.textContent = score;
-
 }
-
-
 
 function clearSelection(){
     for(const $apple of $board.querySelectorAll('.apple.selected')){
